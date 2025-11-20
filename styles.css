@@ -13,6 +13,8 @@
     --clr--purple-blue: #435585;
     --clr--purple-light: #818FB4;
     --clr-creme: #F5E8C7;
+    --clr-red-dark: #ad1414;
+    --clr-red: #ff6b6b;
 }
 
 html, body {
@@ -153,6 +155,7 @@ nav {
     padding: 0 15px;
 }
 
+
 .categoryCollection .title::before,
 .categoryCollection .title::after {
     content: "";
@@ -177,7 +180,7 @@ nav {
     gap: 2em;
 }
 
-.book-card {
+.bookCard {
     display: flex;
     gap: 20px;
     border: 1px solid #ddd;
@@ -189,38 +192,98 @@ nav {
     margin: 10px auto;
 }
 
-.book-cover {
+.bookCover {
     width: 6em;
     height: auto;
     border-radius: 5px;
     object-fit: cover;
 }
 
-.book-meta {
+.bookMeta {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    text-align: left;
+    color: var(--clr--purple-blue);
+
 }
 
-.book-title {
-    font-size: 1.2rem;
+.titleHeart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;;
+}
+
+.titleHeart i {
+    cursor: pointer;
+}
+
+.bookTitle {
+    font-size: 1.4rem;
     font-weight: bold;
-    margin: 0;
+    text-wrap: wrap;    
 }
 
-.book-author,
-.book-category,
-.book-rating {
-    font-size: 0.9rem;
-    color: #555;
-    margin: 2px 0;
+.bookAuthorPublisher {
+    font-size: .9rem;
 }
 
-.book-description {
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 10px;
+.categoriesCont {
+    display: flex;
+    gap: .2em;
+    margin-bottom: .4em;
+    margin-top: .4em;
+    flex-wrap: wrap;
+}
+
+.bookCategory {
+    padding: 0 .6em ;
+    border: 1px solid var(--clr-purple-dark);
+    border-radius: 1em;
+    font-size: .7rem;
+}
+
+.bookRating {
+    font-size: 1.1em;
+    color: var(--clr-red-dark);
+    font-weight: 700;
+}
+
+.bookDescription {
+    font-size: 1rem;
+    line-height: 1.2;
+    font-style: italic;
+    margin-top: .4em;
+    margin-bottom: .4em;
     max-width: 33ch;
+}
+
+.languagePagesPreview {
+    display: flex;
+    flex-direction: row;
+    font-size: .9em;
+}
+
+.languagePagesPreview div {
+    text-wrap: nowrap;
+}
+
+.wantToRead {
+    font-size: .9em;
+    font-weight: bold;
+    align-self: center;
+    margin-top: 1em;
+    background-color: transparent;
+    border: 2px solid var(--clr--purple-blue);
+    border-radius: 4em;
+    padding: .3em 5em;
+    color: var(--clr--purple-blue);
+    cursor: pointer;
+}
+
+.wantToRead:hover {
+    color: var(--clr-red-dark);
+    box-shadow: 1px 1px 10px var(--clr--purple-blue);
 }
 
 
@@ -255,6 +318,6 @@ footer a {
 }
 
 footer a:hover {
-    color: #ff6b6b; 
+    color: var(--clr-red); 
 }
 

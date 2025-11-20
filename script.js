@@ -38,7 +38,7 @@ async function retrieveBooksByCategory() {
 }
 
 function extractBookInfo(rawItems) {
-    let storage = []
+    
     for (const item of rawItems) {
         const bookObject = {
             title: item.volumeInfo.title,
@@ -53,9 +53,21 @@ function extractBookInfo(rawItems) {
             ratingsCount: item.volumeInfo.ratingsCount,
             pageCount: item.volumeInfo.pageCount,
         };
-        storage.push(bookObject)
-
+        createBookCard(bookObject) 
     }
 
-    console.log(storage)
+}
+
+function createBookCard(book) {
+    const articleEl = document.createElement('article');
+    const imgEl = document.createElement('img');
+
+//     const divCollectionEL = document.createElement('div');
+//     const h3El = document.createElement('h3');
+//     const pAuthorEl = document.createElement('p');
+//     const pAuthorEl = document.createElement('p');
+//     const pAuthorEl = document.createElement('p');
+//     const pAuthorEl = document.createElement('p');
+//     const pAuthorEl = document.createElement('p');
+// 
 }
