@@ -138,13 +138,13 @@ nav {
 
 
 
-.title {
+.categoryCollection {
     text-align: center;
     margin: em 0;
     position: relative;
 }
 
-.cards-title {
+.categoryCollection .title {
     display: inline-block;
     position: relative;
     font-size: 1.5rem;
@@ -153,8 +153,8 @@ nav {
     padding: 0 15px;
 }
 
-.cards-title::before,
-.cards-title::after {
+.categoryCollection .title::before,
+.categoryCollection .title::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -164,15 +164,15 @@ nav {
     transform: translateY(-50%);
 }
 
-.cards-title::before {
+.categoryCollection .title::before {
     left: -5em; /* space between line and text */
 }
 
-.cards-title::after {
+.categoryCollection .title::after {
     right: -5em;
 }
 
-.cards-cont {
+.collectionCont {
     display: flex;
     gap: 2em;
 }

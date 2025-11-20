@@ -38,8 +38,7 @@ async function retrieveBooksByCategory() {
 }
 
 
-
-// function retrieveBookInfo(books) {
+// function extractBookInfo(rawItem) {
 //     for (const book of books) {
 //         const title =
 //         const author =
