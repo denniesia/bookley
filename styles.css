@@ -51,7 +51,7 @@ nav {
     justify-content: center;
     gap: 4em;
     padding-bottom: .3em;
-    margin: 1em 4em 2em 4em;
+    margin: 1em auto;
 
 }
 
@@ -141,8 +141,9 @@ nav {
 
 
 .categoryCollection {
+    width: 100%;
     text-align: center;
-    margin: em 0;
+    margin: 1em 0;
     position: relative;
 }
 
@@ -188,24 +189,24 @@ nav {
     padding: 15px;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    max-width: 25em;
+    max-width: 30%;
     margin: 10px auto;
+    align-items: flex-start;
 }
 
 .bookCover {
-    width: 6em;
-    height: auto;
+    flex: 0 1 20%; /* grow | shrink | basis */
+    max-width: 120px;
     border-radius: 5px;
     object-fit: cover;
 }
 
 .bookMeta {
+    flex: 1 1 60%; /* grows more than image */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    text-align: left;
     color: var(--clr--purple-blue);
-
 }
 
 .titleHeart {
