@@ -222,3 +222,39 @@ nav {
     margin-top: 10px;
     max-width: 33ch;
 }
+
+
+
+
+/* Footer */
+footer {
+    color: var(--clr-creme);       
+    font-size: 1rem;
+    text-align: center;
+    box-shadow: 0 -2px 5px -5px var(--clr-creme);
+}
+
+footer .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+footer p {
+    padding-top: 1em;
+}
+
+footer a {
+    color: #f0f0f0;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+footer a:hover {
+    color: #ff6b6b; 
+}
+
