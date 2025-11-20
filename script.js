@@ -33,23 +33,29 @@ async function retrieveBooksByCategory() {
     const data = await res.json()
     const books = data.items; 
 
-    retrieveBookInfo(books);
-
+    extractBookInfo(books);
+    
 }
 
+function extractBookInfo(rawItems) {
+    let storage = []
+    for (const item of rawItems) {
+        const bookObject = {
+            title: item.volumeInfo.title,
+            authors: item.volumeInfo.authors,
+            publisher: item.volumeInfo.publisher,
+            description: item.volumeInfo.description,
+            categories: item.volumeInfo.categories,
+            language: item.volumeInfo.language,
+            previewLink: item.volumeInfo.previewLink,
+            imageLink: item.volumeInfo.imageLink,
+            avgRating: item.volumeInfo.avgRating,
+            ratingsCount: item.volumeInfo.ratingsCount,
+            pageCount: item.volumeInfo.pageCount,
+        };
+        storage.push(bookObject)
 
-// function extractBookInfo(rawItem) {
-//     for (const book of books) {
-//         const title =
-//         const author =
-//         const publisher =
-//         const description =
-//         const categories =
-//         const language =
-//         const previewLink =
-//         const imageLink =
-//         const avgRating =
-//         const ratingsCount =
-//         const pages =
-//     }
-// }
+    }
+
+    console.log(storage)
+}
