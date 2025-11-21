@@ -48,7 +48,7 @@ function extractBookInfo(rawItems, bookCategory) {
     for (const item of rawItems) {
         const bookObject = {
             title: item.title,
-            authors: item.authors || ["Unknown author"],
+        
             category: bookCategory,
            
         };
@@ -74,8 +74,9 @@ async function fetchBookInfoFromGoogleBooks(bookObject){
 
 
 function expandBookInfoFromGoogleBooks(bookObject, additionalInfo){
-    bookObject["publisher"] = additionalInfo.publisher || "Unknown publisher";
+    bookObject["publisher"] = additionalInfo.volumeInfo.publisher || "Unknown publisher";
     bookObject["language"] = additionalInfo.volumeInfo?.language || "N/A";
+    bookObject["authors"] = additionalInfo.volumeInfo?.authors || "Unknown";
     bookObject["previewLink"] = additionalInfo.volumeInfo?.previewLink;
     bookObject["imageLink"] = additionalInfo.volumeInfo?.imageLinks?.thumbnail;
     bookObject["avgRating"] = additionalInfo.volumeInfo?.averageRating || "-";
