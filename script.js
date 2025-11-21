@@ -20,51 +20,94 @@ async function searchBooks() {
 
 */
 // triggerThrillers()
-function triggerThrillers() {
-    const bookCategory = 'thriller'
-    retrieveBooksByCategory(bookCategory)
-}
+// function triggerThrillers() {
+//     const bookCategory = 'thriller'
+//     retrieveBooksByCategory(bookCategory)
+// }
 
-async function retrieveBooksByCategory(bookCategory) {
-    const query = encodeURIComponent(`subject:${bookCategory}`); 
-    /* encodeURIComponent function that encodes a string so 
-    it can be used as a URL query param */
+
+retrieveBooksByCategoryFromOpenLibrary()
+async function retrieveBooksByCategoryFromOpenLibrary() {
+    const category = 'thriller'; 
+   
 
     /* api endpoint for 6 books */
-    const apiURL = `https://www.googleapis.com/books/v1/volumes?q=${query}&printType=books&orderBy=relevance&maxResults=6`;
+    const apiURL = `https://openlibrary.org/subjects/${category}.json?limit=6`;
+
     const res = await fetch(apiURL);
 
     const data = await res.json()
-    const books = data.items; 
-    extractBookInfo(books, bookCategory);
-    
+    const books = data.works; 
+    console.log(books)
+    extractBookInfo(books, category)
 }
+
 
 function extractBookInfo(rawItems, bookCategory) {
     
     for (const item of rawItems) {
         const bookObject = {
-             title: item.volumeInfo?.title,
-            authors: item.volumeInfo?.authors || ["Unknown author"],
-            publisher: item.volumeInfo?.publisher || "Unknown publisher",
-            description: item.volumeInfo?.description || "No description available.",
-            categories: item.volumeInfo?.categories || ["Uncategorized"],
-            language: item.volumeInfo?.language || "N/A",
-            previewLink: item.volumeInfo?.previewLink || "#",
-            imageLink: item.volumeInfo?.imageLinks?.thumbnail || "assets/img/default-cover.jpg",
-            avgRating: item.volumeInfo?.averageRating || 0,
-            ratingsCount: item.volumeInfo?.ratingsCount || 0,
-            pageCount: item.volumeInfo?.pageCount || "Unknown",
+            title: item.title,
+            authors: item.authors || ["Unknown author"],
+            category: bookCategory,
+           
         };
-        createBookCard(bookObject, bookCategory) 
+
+
+        fetchBookInfoFromGoogleBooks(bookObject)
     }
 
 }
 
-function createBookCard(book, bookCategory) {
+async function fetchBookInfoFromGoogleBooks(bookObject){
+    const bookTitle = encodeURIComponent(bookObject.title);
+
+
+    const apiURL = `https://www.googleapis.com/books/v1/volumes?q=intitle:${bookTitle}`
+    const res = await fetch(apiURL);
+
+    const data = await res.json()
+    const additionalBookInfo = data.items[0]; 
+
+    expandBookInfoFromGoogleBooks(bookObject, additionalBookInfo)
+}
+
+
+function expandBookInfoFromGoogleBooks(bookObject, additionalInfo){
+    bookObject["publisher"] = additionalInfo.publisher || "Unknown publisher";
+    bookObject["language"] = additionalInfo.volumeInfo?.language || "N/A";
+    bookObject["previewLink"] = additionalInfo.volumeInfo?.previewLink;
+    bookObject["imageLink"] = additionalInfo.volumeInfo?.imageLinks?.thumbnail;
+    bookObject["avgRating"] = additionalInfo.volumeInfo?.averageRating || "-";
+    bookObject["ratingsCount"] = additionalInfo.volumeInfo?.ratingsCount || "-";
+    bookObject["pageCount"] = additionalInfo.volumeInfo?.pageCount || "Unknown ";
+
+    description = additionalInfo.volumeInfo?.description || "No description available."
+
+    if (description.length > 500) {
+        description = description.substring(0, 300) + "...";
+    }
+
+    bookObject["description"] = description;
+
+    createBookCard(bookObject)
+}
+
+function createBookCard(book) {
     const articleEl = document.createElement('article');
+
+    const divBookCardEl = document.createElement('div');
+    const divBookInfoEl = document.createElement('div');
+   
+    const divBookMetaLeftEl = document.createElement('div');
     const imgEl = document.createElement('img');
-    const divBookMetaEL = document.createElement('div');
+    const pBookRatingEl = document.createElement('p');
+    const spanRatingCountEl = document.createElement('span');
+    const divCategoriesContEl = document.createElement('div');
+    const divCategoryEl = document.createElement('div');
+
+    const divBookMetaRightEl = document.createElement('div');
+
     const divTitleHeartEL = document.createElement('div');
     const h3El = document.createElement('h3');
     const iRegularHeart = document.createElement('i');
@@ -73,14 +116,21 @@ function createBookCard(book, bookCategory) {
 
     const divAuthorPublisherEl = document.createElement('div');
     const spanBookAuthorPublisherEl = document.createElement('span');
-    const divCategoriesContEl = document.createElement('div');
-    const pBookRatingEl = document.createElement('p');
-    const spanRatingCountEl = document.createElement('span');
-
+   
     const pBookDescriptionEl = document.createElement('p');
     const divLanguagePagesPreviewEl = document.createElement('div');
+    const divLanguagePagesEl = document.createElement('div');
     
     const btnEl = document.createElement('button');
+
+    const divLanguageEl = document.createElement('div');
+    const divPagesEl = document.createElement('div');
+    const divPreviewLinkEl = document.createElement('div');
+    const aPreviewLinkEl = document.createElement('a');
+
+    const iLanguageEl = document.createElement('i');
+    const iPagesEl = document.createElement('i');
+    const iPreviewEl = document.createElement('i');
 
     const authors = Array.from(book.authors);
 
@@ -90,89 +140,103 @@ function createBookCard(book, bookCategory) {
     
     spanBookAuthorPublisherEl.textContent = `by ${authors.join(', ')} | Publisher: ${book.publisher}`;
 
-    for (const cat of book.categories) {
-        const divBookCategoryEl = document.createElement('div');
-        divBookCategoryEl.textContent = cat;
-        divBookCategoryEl.classList.add(bookCategory);
-        divCategoriesContEl.appendChild(divBookCategoryEl);
-    }
+ 
+    const divBookCategoryEl = document.createElement('div');
+    divBookCategoryEl.textContent = book.category;
+    divBookCategoryEl.classList.add('bookCategory');
+    divCategoriesContEl.appendChild(divBookCategoryEl);
+    
 
     pBookRatingEl.textContent = `⭐ ${book.avgRating}`;
     spanRatingCountEl.textContent = `(${book.ratingsCount})`;
     pBookDescriptionEl.textContent = book.description;
 
-    for (let item of [book.language, book.pageCount, book.previewLink]) {
-        const newDiv = document.createElement('div');
-        newDiv.textContent = item;
-
-        divLanguagePagesPreviewEl.appendChild(newDiv)
-    }
-
+   
+    aPreviewLinkEl.target = "_blank";
+   
     btnEl.textContent = 'Want to Read'
 
     /* Assign Classes */
     articleEl.classList.add('bookCard');
+    divBookCardEl.classList.add('bookCard');
+    divBookInfoEl.classList.add('bookInfo');
+    divBookMetaLeftEl.classList.add('bookMetaLeft');
     imgEl.classList.add('bookCover');
-    divBookMetaEL.classList.add('bookMeta');
+    pBookRatingEl.classList.add('bookRating');
+    spanRatingCountEl.classList.add('ratingCount');
+    divCategoriesContEl.classList.add('categoriesCont');
+   
+
+    divBookMetaRightEl.classList.add('bookMetaRight');
     divTitleHeartEL.classList.add('titleHeart');
     h3El.classList.add('bookTitle');
     iRegularHeart.classList.add('fa-regular', 'fa-heart');
     iSolidHeart.classList.add('fa-solid', 'fa-heart');
-    divAuthorPublisherEl.classList.add('authorPublisher');
-    divCategoriesContEl.classList.add('categoriesCont');
-    pBookRatingEl.classList.add('bookRating');
-    spanRatingCountEl.classList.add('ratingCount');
+    divAuthorPublisherEl.classList.add('bookAuthorPublisher');
+   
     pBookDescriptionEl.classList.add('bookDescription');
     divLanguagePagesPreviewEl.classList.add('languagePagesPreview');
+    divLanguagePagesEl.classList.add('languagePages');
     btnEl.classList.add('wantToRead')
 
+    iLanguageEl.classList.add('fa-solid', 'fa-language');
+    iPagesEl.classList.add('fa-regular', 'fa-file-lines');
+    iPreviewEl.classList.add('fa-solid', 'fa-link')
+
     /* Append Children */
-    articleEl.appendChild(imgEl);
-    articleEl.appendChild(divBookMetaEL);
-    divBookMetaEL.appendChild(divTitleHeartEL);
+    articleEl.appendChild(divBookInfoEl);
+    
+    divBookInfoEl.appendChild(divBookMetaLeftEl);
+    divBookInfoEl.appendChild(divBookMetaRightEl);
+
+    divBookMetaLeftEl.appendChild(imgEl);
+    divBookMetaLeftEl.appendChild(pBookRatingEl);
+    divBookMetaLeftEl.appendChild(divCategoriesContEl);
+    divBookMetaLeftEl.appendChild(divLanguagePagesPreviewEl)
+    
+    pBookRatingEl.appendChild(spanRatingCountEl);
+
+    divCategoriesContEl.appendChild(divBookCategoryEl);
+
+    divBookMetaRightEl.appendChild(divTitleHeartEL);
+    divBookMetaRightEl.appendChild(divAuthorPublisherEl);
+    divBookMetaRightEl.appendChild(pBookDescriptionEl);
+    divBookMetaRightEl.appendChild(btnEl);
+    
+
     divTitleHeartEL.appendChild(h3El);
     divTitleHeartEL.appendChild(iRegularHeart);
     divTitleHeartEL.appendChild(iSolidHeart);
+
     divAuthorPublisherEl.appendChild(spanBookAuthorPublisherEl);
-    articleEl.appendChild(divAuthorPublisherEl);
+
+    divLanguagePagesPreviewEl.appendChild(divLanguagePagesEl)
+    divLanguagePagesEl.appendChild(divLanguageEl)
+    divLanguagePagesEl.appendChild(divPagesEl)
+    divLanguagePagesPreviewEl.appendChild(divPreviewLinkEl)
+
+ 
+    divPagesEl.appendChild(iPagesEl);
+
+    divPreviewLinkEl.appendChild(aPreviewLinkEl);
     
-    divBookMetaEL.appendChild(divAuthorPublisherEl)
-    divBookMetaEL.appendChild(divCategoriesContEl)
-    divBookMetaEL.appendChild(pBookRatingEl)
-    divBookMetaEL.appendChild(pBookDescriptionEl)
-    divBookMetaEL.appendChild(divLanguagePagesPreviewEl)
+    aPreviewLinkEl.href = book.previewLink;
 
-
-    pBookRatingEl.appendChild(spanRatingCountEl);
-    divBookMetaEL.appendChild(btnEl)
-    
-
-    appendToMainCategoryComponent(articleEl, bookCategory)
+    divLanguageEl.append(iLanguageEl, book.language);
+    divPagesEl.append(iPagesEl, book.pageCount);
+    aPreviewLinkEl.append(iPreviewEl, " Preview");
+   
+    appendToMainCategoryComponent(articleEl, book.category)
 }
 
-function appendToMainCategoryComponent(createdComponent, bookCategory) {
+function appendToMainCategoryComponent(cardElement, bookCategory) {
     if (bookCategory === 'thriller') {
         const categoryElement = document.getElementById('thriller');
-        categoryElement.appendChild(createdComponent)
+        categoryElement.appendChild(cardElement);
     }
 }
 
 
 
-retrieveBooksByCategoryOpen()
 
-async function retrieveBooksByCategoryOpen() {
-    const query = encodeURIComponent(`subject:}`); 
-    /* encodeURIComponent function that encodes a string so 
-    it can be used as a URL query param */
 
-    /* api endpoint for 6 books */
-    const apiURL = `https://openlibrary.org/subjects/science_fiction.json?`;
-
-    const res = await fetch(apiURL);
-
-    const data = await res.json()
-    const books = data; 
-    console.log(books)
-    
-}

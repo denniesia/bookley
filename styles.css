@@ -178,7 +178,9 @@ nav {
 
 .collectionCont {
     display: flex;
-    gap: 2em;
+    gap: .5em;
+    flex-wrap: wrap;
+    
 }
 
 .bookCard {
@@ -193,15 +195,18 @@ nav {
     width: 25rem;
     margin: 10px auto;
     align-items: flex-start;
+    text-align: left;
+
 }
 
 .bookInfo {
     display: flex;
+    gap: 10px;
+
 }
 
 .bookCover {
-    
-    max-width: 120px;
+    max-width: 150px;
     border-radius: 5px;
     object-fit: cover;
 }
@@ -210,19 +215,22 @@ nav {
     flex: 1 1 40%; /* grows more than image */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
     text-align: left;
+
 }
 
 .bookMetaRight {
-    
+    flex: 1 1 60%; /* grows more than image */
+    display: flex;
+    flex-direction: column;
+    overflow-wrap: break-word;
 }
 
 .titleHeart {
     display: flex;
     justify-content: space-between;
     align-items: center;;
+    max-width: 20ch;
 }
 
 .titleHeart i {
@@ -230,13 +238,17 @@ nav {
 }
 
 .bookTitle {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: bold;
     text-wrap: wrap;    
+    line-height: 1.2;
 }
 
 .bookAuthorPublisher {
     font-size: .9rem;
+    text-wrap: wrap;
+    overflow: hidden;
+    max-width: 30ch;
 }
 
 .categoriesCont {
@@ -255,41 +267,52 @@ nav {
 }
 
 .bookRating {
-    font-size: 1.1em;
+    font-size: 1em;
     color: var(--clr-red-dark);
-    font-weight: 700;
+
 }
 
 .bookDescription {
-    font-size: 1rem;
+    font-size: .9rem;
     line-height: 1.2;
     font-style: italic;
     margin-top: .4em;
     margin-bottom: .4em;
-    max-width: 33ch;
+    max-width: 34ch;
+    text-align: left;
+    text-align: justify;
+    color: var(--clr--purple-blue);
 }
 
 .languagePagesPreview {
     display: flex;
-    flex-direction: row;
-    font-size: .9em;
+    flex-direction: column;
+    font-size: .8em;
+    gap: 2px;
+}
+
+.languagePages {
+    display: flex;
+    gap: .5em;
 }
 
 .languagePagesPreview div {
-    text-wrap: nowrap;
+    max-width: 20ch;
+    text-wrap: wrap;
 }
 
+
 .wantToRead {
-    font-size: .9em;
+    font-size: .8em;
     font-weight: bold;
     align-self: center;
-    margin-top: 1em;
     background-color: transparent;
     border: 2px solid var(--clr--purple-blue);
     border-radius: 4em;
     padding: .3em 5em;
     color: var(--clr--purple-blue);
     cursor: pointer;
+    margin-top: 1em;
 }
 
 .wantToRead:hover {
