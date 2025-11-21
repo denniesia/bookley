@@ -98,9 +98,28 @@ nav {
 .wrapper {
     margin: 2em auto;
     max-width: 80em;
-    padding: 1em 2em;
-    
+     
 }
+.loading-dots {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+}
+
+.loading-dots .dots::after {
+  content: "...";
+  animation: dotsAnimation 1s steps(3, end) infinite;
+}
+
+@keyframes dotsAnimation {
+  0%   { content: ""; }
+  33%  { content: "."; }
+  66%  { content: ".."; }
+  100% { content: "..."; }
+}
+
+
 
 .search-cont {
     width: 100%;
@@ -140,10 +159,7 @@ nav {
     color: #999;
 }
 
-
-
-.categoryCollection {
-    
+.categoryCollection { 
     text-align: center;
     margin: 1em 0;
     position: relative;
@@ -155,7 +171,6 @@ nav {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--clr-creme);
-    padding: 0 15px;
 }
 
 
@@ -171,18 +186,17 @@ nav {
 }
 
 .categoryCollection .title::before {
-    left: -5em; /* space between line and text */
+    left: -5.3em; /* space between line and text */
 }
 
 .categoryCollection .title::after {
-    right: -5em;
+    right: -5.3em;
 }
 
 .collectionCont {
     display: flex;
-    gap: .5em;
+    gap: 1.3em;
     flex-wrap: wrap;
-    
 }
 
 .categoriesCont {
@@ -199,12 +213,12 @@ nav {
     gap: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    width: 25rem;
+    width: 24rem;
     height: 24rem;
-    margin: 10px auto;
+   
     align-items: flex-start;
     text-align: left;
     position: relative;
@@ -223,14 +237,14 @@ nav {
 }
 
 .bookMetaLeft {
-    flex: 1 1 40%; /* grows more than image */
+ 
     display: flex;
     flex-direction: column;
     text-align: left;
 }
 
 .bookMetaRight {
-    flex: 1 1 60%; /* grows more than image */
+
     display: flex;
     flex-direction: column;
     overflow-wrap: break-word;
@@ -283,7 +297,7 @@ nav {
 .bookRating {
     font-size: 1em;
     color: var(--clr-red-dark);
-
+    margin-top: .3em;
 }
 
 .bookDescription {

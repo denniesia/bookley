@@ -1,4 +1,5 @@
 const searchEl = document.getElementById('search');
+const pLoadingEl = document.getElementById('loadingMessage');
 
 /* Search Logic 
 searchEl.addEventListener('keypress', function(e) {
@@ -24,18 +25,33 @@ async function searchBooks() {
 //     const bookCategory = 'thriller'
 //     retrieveBooksByCategory(bookCategory)
 // }
+display()
+
 
 
 function display() {
-    const bookCategories = ['thriller', 'romance', 'history']
-    retrieveBooksByCategoryFromOpenLibrary()    
+   
+
+    loadBookCategories();
+}
+
+function loadBookCategories() {
+     const bookCategories = [
+        'thriller', 
+        'romance', 
+        'history', 
+        'psychology',
+        'programming',
+    ]
+
+    for (const category of bookCategories) {
+        retrieveBooksByCategoryFromOpenLibrary(category)    
+    }
 }
 
 
-async function retrieveBooksByCategoryFromOpenLibrary(category) {
-    const category = 'thriller'; 
-   
 
+async function retrieveBooksByCategoryFromOpenLibrary(category) {
     /* api endpoint for 6 books */
     const apiURL = `https://openlibrary.org/subjects/${category}.json?limit=6`;
 
@@ -43,22 +59,20 @@ async function retrieveBooksByCategoryFromOpenLibrary(category) {
 
     const data = await res.json()
     const books = data.works; 
-
+    
     extractBookInfo(books, category)
 }
 
 
 function extractBookInfo(rawItems, bookCategory) {
-    
+    pLoadingEl.style.display = 'none';
     for (const item of rawItems) {
         const bookObject = {
             title: item.title,
         
             category: bookCategory,
-           
+      
         };
-
-
         fetchBookInfoFromGoogleBooks(bookObject)
     }
 
@@ -90,7 +104,7 @@ function expandBookInfoFromGoogleBooks(bookObject, additionalInfo){
 
     description = additionalInfo.volumeInfo?.description || "No description available."
 
-    if (description.length > 500) {
+    if (description.length > 350) {
         description = description.substring(0, 300) + "...";
     }
 
@@ -110,7 +124,6 @@ function createBookCard(book) {
     const pBookRatingEl = document.createElement('p');
     const spanRatingCountEl = document.createElement('span');
     const divCategoriesContEl = document.createElement('div');
-    const divCategoryEl = document.createElement('div');
 
     const divBookMetaRightEl = document.createElement('div');
 
@@ -138,10 +151,16 @@ function createBookCard(book) {
     const iPagesEl = document.createElement('i');
     const iPreviewEl = document.createElement('i');
 
-    const authors = Array.from(book.authors);
+    let authors;
+    if (Array.isArray(book.authors)) {
+    authors = Array.from(book.authors); 
+    } else {
+        authors = ['Unknown'];
+    }
 
     /* Assign text */
     imgEl.src = book.imageLink;
+    imgEl.alt = 'Book Cover';
     h3El.textContent = book.title;
     
     spanBookAuthorPublisherEl.textContent = `by ${authors.join(', ')} | Publisher: ${book.publisher}`;
@@ -251,10 +270,9 @@ function createBookCard(book) {
 }
 
 function appendToMainCategoryComponent(cardElement, bookCategory) {
-    if (bookCategory === 'thriller') {
-        const categoryElement = document.getElementById('thriller');
-        categoryElement.appendChild(cardElement);
-    }
+    const categoryElement = document.getElementById(bookCategory);
+    categoryElement.appendChild(cardElement);
+ 
 }
 
 
