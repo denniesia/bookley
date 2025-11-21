@@ -26,8 +26,13 @@ async function searchBooks() {
 // }
 
 
-retrieveBooksByCategoryFromOpenLibrary()
-async function retrieveBooksByCategoryFromOpenLibrary() {
+function display() {
+    const bookCategories = ['thriller', 'romance', 'history']
+    retrieveBooksByCategoryFromOpenLibrary()    
+}
+
+
+async function retrieveBooksByCategoryFromOpenLibrary(category) {
     const category = 'thriller'; 
    
 
@@ -38,7 +43,7 @@ async function retrieveBooksByCategoryFromOpenLibrary() {
 
     const data = await res.json()
     const books = data.works; 
-    console.log(books)
+
     extractBookInfo(books, category)
 }
 
@@ -111,9 +116,9 @@ function createBookCard(book) {
 
     const divTitleHeartEL = document.createElement('div');
     const h3El = document.createElement('h3');
+  
     const iRegularHeart = document.createElement('i');
     const iSolidHeart = document.createElement('i');
-    iSolidHeart.style.display = 'none'
 
     const divAuthorPublisherEl = document.createElement('div');
     const spanBookAuthorPublisherEl = document.createElement('span');
@@ -171,8 +176,8 @@ function createBookCard(book) {
     divBookMetaRightEl.classList.add('bookMetaRight');
     divTitleHeartEL.classList.add('titleHeart');
     h3El.classList.add('bookTitle');
-    iRegularHeart.classList.add('fa-regular', 'fa-heart');
-    iSolidHeart.classList.add('fa-solid', 'fa-heart');
+    iRegularHeart.classList.add('fa-regular', 'fa-heart', 'regular-heart');
+    iSolidHeart.classList.add('fa-solid', 'fa-heart', 'solid-heart', 'hidden');
     divAuthorPublisherEl.classList.add('bookAuthorPublisher');
    
     pBookDescriptionEl.classList.add('bookDescription');
@@ -226,7 +231,22 @@ function createBookCard(book) {
     divLanguageEl.append(iLanguageEl, book.language);
     divPagesEl.append(iPagesEl, book.pageCount);
     aPreviewLinkEl.append(iPreviewEl, " Preview");
-   
+
+  
+    const favBtn = document.createElement('button');
+    divTitleHeartEL.appendChild(favBtn);
+
+    favBtn.type = 'button';
+    favBtn.className = 'favBtn';
+    favBtn.setAttribute('aria-pressed', 'false');
+
+    favBtn.append(iRegularHeart, iSolidHeart);
+
+    iSolidHeart.style.display = 'none';
+    // iRegularHeart.addEventListener('click', addToFavorites);
+    // iSolidHeart.addEventListener('click', removeFromFavorites);
+
+
     appendToMainCategoryComponent(articleEl, book.category)
 }
 
@@ -238,6 +258,40 @@ function appendToMainCategoryComponent(cardElement, bookCategory) {
 }
 
 
+/* Design functions */
 
+// function addToFavorites(e) {
+//     const regularHeartEl = e.currentTarget; 
+//     const parentEl = regularHeartEl.parentElement;
+//     const children = parentEl.children;
+//     const arrayChildren = Array.from(children);
+//     const solidHeartEl = arrayChildren[1];
+//     console.log(regularHeartEl)
+//     if (regularHeartEl.style.display === 'inline') {
+//         regularHeartEl.style.display = 'none';
+//         solidHeartEl.style.display = 'inline';
 
+//     } else {
+//         regularHeartEl.style.display = 'inline';
+//         solidHeartEl.style.display = 'none';
 
+//     }
+// }
+
+// function removeFromFavorites(e) {
+//     const solidHeartEl = e.currentTarget; 
+//     const parentEl = solidHeartEl.parentElement;
+//     const children = parentEl.children;
+//     const arrayChildren = Array.from(children);
+//     const regularHeartEl = arrayChildren[1];
+
+//     if (solidHeartEl.style.display === 'inline') {
+//         solidHeartEl.style.display = 'none';
+//         regularHeartEl.style.display = 'inline';
+
+//     } else {
+//         solidHeartEl.style.display = 'inline';
+//         regularHeartEl.style.display = 'none';
+
+//     }
+// }
