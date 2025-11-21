@@ -19,7 +19,7 @@ async function searchBooks() {
 }
 
 */
-triggerThrillers()
+// triggerThrillers()
 function triggerThrillers() {
     const bookCategory = 'thriller'
     retrieveBooksByCategory(bookCategory)
@@ -83,13 +83,12 @@ function createBookCard(book, bookCategory) {
     const btnEl = document.createElement('button');
 
     const authors = Array.from(book.authors);
-    const publishers = Array.from(book.publisher);
 
     /* Assign text */
     imgEl.src = book.imageLink;
     h3El.textContent = book.title;
     
-    spanBookAuthorPublisherEl.textContent = `by ${authors.join(', ')} | Publisher: ${publishers.join(', ')}`;
+    spanBookAuthorPublisherEl.textContent = `by ${authors.join(', ')} | Publisher: ${book.publisher}`;
 
     for (const cat of book.categories) {
         const divBookCategoryEl = document.createElement('div');
@@ -108,6 +107,8 @@ function createBookCard(book, bookCategory) {
 
         divLanguagePagesPreviewEl.appendChild(newDiv)
     }
+
+    btnEl.textContent = 'Want to Read'
 
     /* Assign Classes */
     articleEl.classList.add('bookCard');
@@ -143,8 +144,8 @@ function createBookCard(book, bookCategory) {
 
 
     pBookRatingEl.appendChild(spanRatingCountEl);
-
-    articleEl.appendChild(btnEl)
+    divBookMetaEL.appendChild(btnEl)
+    
 
     appendToMainCategoryComponent(articleEl, bookCategory)
 }
@@ -154,4 +155,24 @@ function appendToMainCategoryComponent(createdComponent, bookCategory) {
         const categoryElement = document.getElementById('thriller');
         categoryElement.appendChild(createdComponent)
     }
+}
+
+
+
+retrieveBooksByCategoryOpen()
+
+async function retrieveBooksByCategoryOpen() {
+    const query = encodeURIComponent(`subject:}`); 
+    /* encodeURIComponent function that encodes a string so 
+    it can be used as a URL query param */
+
+    /* api endpoint for 6 books */
+    const apiURL = `https://openlibrary.org/subjects/science_fiction.json?`;
+
+    const res = await fetch(apiURL);
+
+    const data = await res.json()
+    const books = data; 
+    console.log(books)
+    
 }
