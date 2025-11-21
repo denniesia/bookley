@@ -96,12 +96,15 @@ nav {
 }
 
 .wrapper {
-    margin: 2em auto;
-    max-width: 80em;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
      
 }
 .loading-dots {
-  font-size: 1.1rem;
+  font-size: 2.1rem;
   font-weight: 600;
   text-align: center;
   color: #fff;
@@ -159,6 +162,12 @@ nav {
     color: #999;
 }
 
+.cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 .categoryCollection { 
     text-align: center;
     margin: 1em 0;
@@ -197,6 +206,7 @@ nav {
     display: flex;
     gap: 1.3em;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .categoriesCont {
@@ -368,6 +378,7 @@ footer {
     font-size: 1rem;
     text-align: center;
     box-shadow: 0 -2px 5px -5px var(--clr-creme);
+   
 }
 
 footer .wrapper {
@@ -376,10 +387,12 @@ footer .wrapper {
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
+    margin-bottom: 1.5em;
+
 }
 
 footer p {
-    padding-top: 1em;
+    padding-top: 1.5em;
 }
 
 footer a {
