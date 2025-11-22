@@ -2,7 +2,6 @@ const searchEl = document.getElementById('search');
 const pLoadingEl = document.getElementById('loadingMessage');
 
 
-
 // async function searchBooks() {
 //     const query = searchEl.value.trim();
 
@@ -53,7 +52,6 @@ async function searchQuery(query) {
         expandBookInfoFromGoogleBooks(bookObject, item);
     }
 }
-
 
 
 function loadBookCategories() {
@@ -109,7 +107,7 @@ async function fetchBookInfoFromGoogleBooks(bookObject){
 function expandBookInfoFromGoogleBooks(bookObject, additionalInfo){
     bookObject["publisher"] = additionalInfo.volumeInfo.publisher || "Unknown publisher";
     bookObject["language"] = additionalInfo.volumeInfo?.language || "N/A";
-    bookObject["authors"] = additionalInfo.volumeInfo?.authors || "Unknown";
+    // bookObject["authors"] = additionalInfo.volumeInfo?.authors || "Unknown";
     bookObject["previewLink"] = additionalInfo.volumeInfo?.previewLink;
     bookObject["imageLink"] = additionalInfo.volumeInfo?.imageLinks?.thumbnail;
     bookObject["avgRating"] = additionalInfo.volumeInfo?.averageRating || "-";
@@ -117,12 +115,18 @@ function expandBookInfoFromGoogleBooks(bookObject, additionalInfo){
     bookObject["pageCount"] = additionalInfo.volumeInfo?.pageCount || "Unknown ";
 
     description = additionalInfo.volumeInfo?.description || "No description available."
+    authors =  additionalInfo.volumeInfo?.authors || "Unknown";
 
-    if (description.length > 350) {
-        description = description.substring(0, 300) + "...";
+    if (description.length > 250) {
+        description = description.substring(0, 250) + "...";
+    };
+    if (authors.length > 9) {
+        authors = authors.splice(authors.length - 9,) + "...";
     };
 
+
     bookObject["description"] = description;
+    bookObject["authors"] = authors;
 
     createBookCard(bookObject)
 }
@@ -267,8 +271,7 @@ function createBookCard(book) {
     favBtn.appendChild(iSolidHeart)
 
     favBtn.addEventListener('click', toggleAddToFavorites);
-    // iRegularHeart.addEventListener('click', addToFavorites);
-   
+
     appendToMainCategoryComponent(articleEl, book.category)
 }
 
@@ -276,6 +279,13 @@ function appendToMainCategoryComponent(cardElement, bookCategory) {
      if (bookCategory === "Search Result") {
         const searchResultsEl = document.getElementById("searchResults");
         searchResultsEl.appendChild(cardElement);
+
+        const parentResultEl = searchResultsEl.parentElement;
+        const sectionCat = document.getElementById('categories');
+        parentResultEl.style.display = 'flex';
+        sectionCat.style.display = 'none';
+      
+        
         return;
     }
     
@@ -382,7 +392,7 @@ function createAppendNewLiEL(toAppendTo, bookId, imgSrc, bookTitle) {
     newImgEl.src = imgSrc;
 
     const newPEl = document.createElement('p');
-    newPEl.classList.add('title');
+    // newPEl.classList.add('title');
     newPEl.textContent = bookTitle;
 
     newLiEl.appendChild(newImgEl);

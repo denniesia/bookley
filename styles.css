@@ -131,7 +131,7 @@ nav {
   border-radius: 4px;
 }
 
-.dropdownMenu .title {
+.dropdownMenu p {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--clr-purple);
@@ -220,13 +220,36 @@ nav {
     align-items: center;
     justify-content: center;
 }
+
+.searchResults {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.resultsCont {
+    display: flex;
+    gap: 1.3em;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 2em;
+}
+
+.divider {
+    width: 97%;
+    height: 0.01rem;
+    background-color: var(--clr-creme);
+}
+
 .categoryCollection { 
     text-align: center;
     margin: 1em 0;
     position: relative;
 }
 
-.categoryCollection .title {
+.title {
     display: inline-block;
     position: relative;
     font-size: 1.5rem;
@@ -235,8 +258,8 @@ nav {
 }
 
 
-.categoryCollection .title::before,
-.categoryCollection .title::after {
+.title::before,
+.title::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -246,11 +269,11 @@ nav {
     transform: translateY(-50%);
 }
 
-.categoryCollection .title::before {
+ .title::before {
     left: -5.3em; /* space between line and text */
 }
 
-.categoryCollection .title::after {
+.title::after {
     right: -5.3em;
 }
 
@@ -301,14 +324,12 @@ nav {
 }
 
 .bookMetaLeft {
- 
     display: flex;
     flex-direction: column;
     text-align: left;
 }
 
 .bookMetaRight {
-
     display: flex;
     flex-direction: column;
     overflow-wrap: break-word;
