@@ -1,35 +1,60 @@
 const searchEl = document.getElementById('search');
 const pLoadingEl = document.getElementById('loadingMessage');
 
-/* Search Logic 
-searchEl.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        searchBooks();
-    }
-});
 
 
-async function searchBooks() {
-    const query = searchEl.value.trim();
+// async function searchBooks() {
+//     const query = searchEl.value.trim();
 
-    const apiURL = `https://www.googleapis.com/books/v1/volumes?q=intitle:${query}+inauthor:${query}&maxResults=24`;
-    const res = await fetch(apiURL);
-    const data = await res.json();
+//     const apiURL = `https://www.googleapis.com/books/v1/volumes?q=intitle:${query}+inauthor:${query}&maxResults=24`;
+//     const res = await fetch(apiURL);
+//     const data = await res.json();
 
-    console.log(data)
-}
-
-*/
-// triggerThrillers()
-// function triggerThrillers() {
-//     const bookCategory = 'thriller'
-//     retrieveBooksByCategory(bookCategory)
+//     console.log(data)
 // }
+
 display()
 
 function display() {
     loadBookCategories();
+
+    searchEl.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') { 
+            const query = searchEl.value.trim();
+            if (query) {
+                searchQuery(query); 
+            }
+        }
+    });
+
 }
+
+async function searchQuery(query) {
+    const searchResultsEl = document.getElementById('searchResults');
+    searchResultsEl.innerHTML = "";
+
+    query = encodeURIComponent(query);
+
+    const apiURL = `https://www.googleapis.com/books/v1/volumes?q=intitle:${query}+inauthor:${query}&maxResults=10`;
+    const res = await fetch(apiURL);
+    const data = await res.json();
+
+    const books = data.items || [];
+
+    for (const item of books) {
+        const info = item.volumeInfo || {};
+
+        const bookObject = {
+            title: info.title || "No Title",
+            category: "Search Result"
+        };
+
+        // reuse your existing function
+        expandBookInfoFromGoogleBooks(bookObject, item);
+    }
+}
+
+
 
 function loadBookCategories() {
      const bookCategories = [
@@ -248,8 +273,16 @@ function createBookCard(book) {
 }
 
 function appendToMainCategoryComponent(cardElement, bookCategory) {
+     if (bookCategory === "Search Result") {
+        const searchResultsEl = document.getElementById("searchResults");
+        searchResultsEl.appendChild(cardElement);
+        return;
+    }
+    
     const categoryElement = document.getElementById(bookCategory);
-    categoryElement.appendChild(cardElement);
+    if (categoryElement) {
+        categoryElement.appendChild(cardElement);
+    }
 }
 
 
