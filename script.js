@@ -27,11 +27,7 @@ async function searchBooks() {
 // }
 display()
 
-
-
 function display() {
-   
-
     loadBookCategories();
 }
 
@@ -49,8 +45,6 @@ function loadBookCategories() {
     }
 }
 
-
-
 async function retrieveBooksByCategoryFromOpenLibrary(category) {
     /* api endpoint for 6 books */
     const apiURL = `https://openlibrary.org/subjects/${category}.json?limit=6`;
@@ -63,15 +57,12 @@ async function retrieveBooksByCategoryFromOpenLibrary(category) {
     extractBookInfo(books, category)
 }
 
-
 function extractBookInfo(rawItems, bookCategory) {
     pLoadingEl.style.display = 'none';
     for (const item of rawItems) {
         const bookObject = {
             title: item.title,
-        
             category: bookCategory,
-      
         };
         fetchBookInfoFromGoogleBooks(bookObject)
     }
@@ -81,7 +72,6 @@ function extractBookInfo(rawItems, bookCategory) {
 async function fetchBookInfoFromGoogleBooks(bookObject){
     const bookTitle = encodeURIComponent(bookObject.title);
 
-
     const apiURL = `https://www.googleapis.com/books/v1/volumes?q=intitle:${bookTitle}`
     const res = await fetch(apiURL);
 
@@ -90,7 +80,6 @@ async function fetchBookInfoFromGoogleBooks(bookObject){
 
     expandBookInfoFromGoogleBooks(bookObject, additionalBookInfo)
 }
-
 
 function expandBookInfoFromGoogleBooks(bookObject, additionalInfo){
     bookObject["publisher"] = additionalInfo.volumeInfo.publisher || "Unknown publisher";
@@ -106,7 +95,7 @@ function expandBookInfoFromGoogleBooks(bookObject, additionalInfo){
 
     if (description.length > 350) {
         description = description.substring(0, 300) + "...";
-    }
+    };
 
     bookObject["description"] = description;
 
@@ -130,6 +119,7 @@ function createBookCard(book) {
     const divTitleHeartEL = document.createElement('div');
     const h3El = document.createElement('h3');
     const iRegularHeart = document.createElement('i');
+    const iSolidHeart = document.createElement('i');
   
     const divAuthorPublisherEl = document.createElement('div');
     const spanBookAuthorPublisherEl = document.createElement('span');
@@ -190,8 +180,10 @@ function createBookCard(book) {
     divBookMetaRightEl.classList.add('bookMetaRight');
     divTitleHeartEL.classList.add('titleHeart');
     h3El.classList.add('bookTitle');
+
     iRegularHeart.classList.add('fa-regular', 'fa-heart', 'regular-heart')
-  
+    iSolidHeart.classList.add('fa-solid', 'fa-heart', 'solid-heart', 'hidden');
+
     divAuthorPublisherEl.classList.add('bookAuthorPublisher');
    
     pBookDescriptionEl.classList.add('bookDescription');
@@ -223,7 +215,6 @@ function createBookCard(book) {
     divBookMetaRightEl.appendChild(pBookDescriptionEl);
     divBookMetaRightEl.appendChild(btnEl);
     
-
     divTitleHeartEL.appendChild(h3El);
 
     divAuthorPublisherEl.appendChild(spanBookAuthorPublisherEl);
@@ -248,7 +239,10 @@ function createBookCard(book) {
     favBtn.className = 'favBtn';
     favBtn.setAttribute('aria-pressed', 'false');
     favBtn.appendChild(iRegularHeart)
-    iRegularHeart.addEventListener('click', addToFavorites);
+    favBtn.appendChild(iSolidHeart)
+
+    favBtn.addEventListener('click', toggleAddToFavorites);
+    // iRegularHeart.addEventListener('click', addToFavorites);
    
     appendToMainCategoryComponent(articleEl, book.category)
 }
@@ -256,28 +250,39 @@ function createBookCard(book) {
 function appendToMainCategoryComponent(cardElement, bookCategory) {
     const categoryElement = document.getElementById(bookCategory);
     categoryElement.appendChild(cardElement);
- 
 }
 
 
-function addToFavorites(e) {
-    const regularHeartEl = e.target; 
-    const parentEl = regularHeartEl.parentElement;
-    const iSolidHeart = document.createElement('i');
-    iSolidHeart.classList.add('fa-solid', 'fa-heart', 'solid-heart');
-    iSolidHeart.addEventListener('click', removeFromFavorites)
-    parentEl.appendChild(iSolidHeart)
-    regularHeartEl.style.display = 'none';
-}
+function toggleAddToFavorites(e) {
+    const btnEl = e.currentTarget;
+    const regularHeartEl = btnEl.querySelector('.regular-heart');
+    const solidHeartEl = btnEl.querySelector('.solid-heart');
+   
+    const titleHeartContEL = btnEl.parentElement;
+    const titleEl = titleHeartContEL.querySelector('h3');
+    const bookMetaRightEl = titleHeartContEL.parentElement;
+    const bookInfoContEl = bookMetaRightEl.parentElement;
+    const imgEl = bookInfoContEl.querySelector('img');
+    
+    const ulListEL = document.getElementById('favoritesList')
+    const bookId = titleEl.textContent;
+    
+    let existingLiEl = ulListEL.querySelectorAll(`li[data-id="${bookId}"]`)
+    
 
-function removeFromFavorites(e) {
-    const solidHeartEl = e.target; 
-    const parentEl = solidHeartEl.parentElement;
-    const children = Array.from(parentEl.children);
-    const regularHeartEl = children[0];
+    const children = btnEl.children;
+    if (!children[0].classList.contains('hidden')) {
+        solidHeartEl.classList.remove('hidden')
+        regularHeartEl.classList.add('hidden')
 
-    regularHeartEl.style.display = 'inline';
-    solidHeartEl.remove()
+        createAppendNewLiEL(ulListEL, bookId, imgEl.src, titleEl.textContent)
+
+        } else {
+            solidHeartEl.classList.add('hidden')
+            regularHeartEl.classList.remove('hidden')
+
+            existingLiEl[0].remove();
+        }
 }
 
 const dropdownButtons = document.querySelectorAll('.listBtn');
@@ -316,21 +321,7 @@ function toggleWantToRead(e) {
     if (btnEl.textContent === 'Want to Read') {
         // creating new li only if it doesn't exist
         if (existingLiEl.length === 0) {
-            const newLiEl = document.createElement('li');
-            newLiEl.dataset.id = bookId;
-
-            const newImgEl = document.createElement('img');
-            newImgEl.src = imgCoverEl.src;
-
-            const newPEl = document.createElement('p');
-            newPEl.classList.add('author');
-            newPEl.textContent = titleEl.textContent;
-
-            newLiEl.appendChild(newImgEl);
-            newLiEl.appendChild(newPEl);
-
-            ulListEL.appendChild(newLiEl);
-
+           createAppendNewLiEL(ulListEL, bookId, imgCoverEl.src, titleEl.textContent)
         }
 
         btnEl.textContent = "Added to Book List";
@@ -349,3 +340,21 @@ function toggleWantToRead(e) {
 document.addEventListener('click', () => {
   document.querySelectorAll('.dropdownMenu').forEach(menu => menu.hidden = true);
 });
+
+function createAppendNewLiEL(toAppendTo, bookId, imgSrc, bookTitle) {
+    const newLiEl = document.createElement('li');
+    newLiEl.dataset.id = bookId;
+
+    const newImgEl = document.createElement('img');
+    newImgEl.src = imgSrc;
+
+    const newPEl = document.createElement('p');
+    newPEl.classList.add('title');
+    newPEl.textContent = bookTitle;
+
+    newLiEl.appendChild(newImgEl);
+    newLiEl.appendChild(newPEl);
+
+    toAppendTo.appendChild(newLiEl);
+
+}; 

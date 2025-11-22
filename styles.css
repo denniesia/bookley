@@ -43,7 +43,6 @@ ul, ol {
 }
 
 
-
 header {
     box-shadow: 0 2px 5px -5px var(--clr-creme);
 }
@@ -57,7 +56,6 @@ nav {
 
 }
 
-
 .logoImg {
     width: 10em;
 }
@@ -69,7 +67,6 @@ nav {
   gap: 1.5rem;
 }
 
-/* BUTTONS */
 .listBtn {
     display: flex;
     justify-content: center;
@@ -97,7 +94,7 @@ nav {
 }
 
 
-/* DROPDOWN MENU */
+
 .dropdownMenu {
   position: absolute;
   top: 100%;
@@ -107,7 +104,7 @@ nav {
   border-radius: 6px;
   box-shadow: 0 6px 18px rgba(0,0,0,.1);
   padding: 0.5rem;
-  width: 240px;
+  width: 14em;
   z-index: 100;
 }
 
@@ -135,16 +132,13 @@ nav {
 }
 
 .dropdownMenu .title {
-  font-size: .9rem;
+  font-size: 0.8rem;
   font-weight: 600;
+  color: var(--clr-purple);
 }
 
-.dropdownMenu .author {
-  font-size: .75rem;
-  color: #666;
-}
 
-/* Positioning wrapper */
+
 .listDropdown {
   position: relative;
 }
@@ -179,7 +173,6 @@ nav {
   66%  { content: ".."; }
   100% { content: "..."; }
 }
-
 
 
 .search-cont {
@@ -467,3 +460,6 @@ footer a:hover {
     color: var(--clr-red); 
 }
 
+.hidden {
+    display: none !important;
+}
