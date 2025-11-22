@@ -1,4 +1,6 @@
-# Bookley
+
+<img src="assets/img/logo-light.png" alt="Logo" width="300">
+
 
 Bookley is a web application for discovering, browsing, and managing books. It allows users to search for books, view detailed information, and explore collections. The app leverages Django for the backend, PostgreSQL for data storage, Celery + Redis for asynchronous tasks, and Cloudinary for media management. The project is deployed on Railway for easy cloud hosting.
 
