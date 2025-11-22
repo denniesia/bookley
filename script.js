@@ -129,10 +129,8 @@ function createBookCard(book) {
 
     const divTitleHeartEL = document.createElement('div');
     const h3El = document.createElement('h3');
-  
     const iRegularHeart = document.createElement('i');
-    const iSolidHeart = document.createElement('i');
-
+  
     const divAuthorPublisherEl = document.createElement('div');
     const spanBookAuthorPublisherEl = document.createElement('span');
    
@@ -195,8 +193,8 @@ function createBookCard(book) {
     divBookMetaRightEl.classList.add('bookMetaRight');
     divTitleHeartEL.classList.add('titleHeart');
     h3El.classList.add('bookTitle');
-    iRegularHeart.classList.add('fa-regular', 'fa-heart', 'regular-heart');
-    iSolidHeart.classList.add('fa-solid', 'fa-heart', 'solid-heart', 'hidden');
+    iRegularHeart.classList.add('fa-regular', 'fa-heart', 'regular-heart')
+  
     divAuthorPublisherEl.classList.add('bookAuthorPublisher');
    
     pBookDescriptionEl.classList.add('bookDescription');
@@ -230,8 +228,6 @@ function createBookCard(book) {
     
 
     divTitleHeartEL.appendChild(h3El);
-    divTitleHeartEL.appendChild(iRegularHeart);
-    divTitleHeartEL.appendChild(iSolidHeart);
 
     divAuthorPublisherEl.appendChild(spanBookAuthorPublisherEl);
 
@@ -240,17 +236,13 @@ function createBookCard(book) {
     divLanguagePagesEl.appendChild(divPagesEl)
     divLanguagePagesPreviewEl.appendChild(divPreviewLinkEl)
 
- 
     divPagesEl.appendChild(iPagesEl);
-
-    divPreviewLinkEl.appendChild(aPreviewLinkEl);
-    
+    divPreviewLinkEl.appendChild(aPreviewLinkEl);   
     aPreviewLinkEl.href = book.previewLink;
 
     divLanguageEl.append(iLanguageEl, book.language);
     divPagesEl.append(iPagesEl, book.pageCount);
     aPreviewLinkEl.append(iPreviewEl, " Preview");
-
   
     const favBtn = document.createElement('button');
     divTitleHeartEL.appendChild(favBtn);
@@ -258,14 +250,9 @@ function createBookCard(book) {
     favBtn.type = 'button';
     favBtn.className = 'favBtn';
     favBtn.setAttribute('aria-pressed', 'false');
-
-    favBtn.append(iRegularHeart, iSolidHeart);
-
-    iSolidHeart.style.display = 'none';
-    // iRegularHeart.addEventListener('click', addToFavorites);
-    // iSolidHeart.addEventListener('click', removeFromFavorites);
-
-
+    favBtn.appendChild(iRegularHeart)
+    iRegularHeart.addEventListener('click', addToFavorites);
+   
     appendToMainCategoryComponent(articleEl, book.category)
 }
 
@@ -277,39 +264,24 @@ function appendToMainCategoryComponent(cardElement, bookCategory) {
 
 
 /* Design functions */
+function addToFavorites(e) {
+    const regularHeartEl = e.target; 
+    const parentEl = regularHeartEl.parentElement;
+    const iSolidHeart = document.createElement('i');
+    iSolidHeart.classList.add('fa-solid', 'fa-heart', 'solid-heart');
+    iSolidHeart.addEventListener('click', removeFromFavorites)
+    parentEl.appendChild(iSolidHeart)
+    regularHeartEl.style.display = 'none';
 
-// function addToFavorites(e) {
-//     const regularHeartEl = e.currentTarget; 
-//     const parentEl = regularHeartEl.parentElement;
-//     const children = parentEl.children;
-//     const arrayChildren = Array.from(children);
-//     const solidHeartEl = arrayChildren[1];
-//     console.log(regularHeartEl)
-//     if (regularHeartEl.style.display === 'inline') {
-//         regularHeartEl.style.display = 'none';
-//         solidHeartEl.style.display = 'inline';
+}
 
-//     } else {
-//         regularHeartEl.style.display = 'inline';
-//         solidHeartEl.style.display = 'none';
+function removeFromFavorites(e) {
 
-//     }
-// }
+    const solidHeartEl = e.target; 
+    const parentEl = solidHeartEl.parentElement;
+    const children = Array.from(parentEl.children);
+    const regularHeartEl = children[0];
 
-// function removeFromFavorites(e) {
-//     const solidHeartEl = e.currentTarget; 
-//     const parentEl = solidHeartEl.parentElement;
-//     const children = parentEl.children;
-//     const arrayChildren = Array.from(children);
-//     const regularHeartEl = arrayChildren[1];
-
-//     if (solidHeartEl.style.display === 'inline') {
-//         solidHeartEl.style.display = 'none';
-//         regularHeartEl.style.display = 'inline';
-
-//     } else {
-//         solidHeartEl.style.display = 'inline';
-//         regularHeartEl.style.display = 'none';
-
-//     }
-// }
+    regularHeartEl.style.display = 'inline';
+    solidHeartEl.remove()
+}
