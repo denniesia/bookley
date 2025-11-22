@@ -15,22 +15,41 @@
 <body>
     <header>
         <nav>
-            <a href="#">
-                <img class="logo-img" src="assets/img/logo-light.png" alt="">
+            <a href="">
+                <img class="logoImg" src="assets/img/logo-light.png" alt="">
             </a>
-            <ul class="links">
-                <li>
-                    <a href="#" class="link-cont">
-                        <img class="heart-img" src="assets/img/heart-icon-light.png" alt="">
-                        Favorites
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="link-cont">
-                        <img src="assets/img/books-light.png" alt=""> Want to Read
-                    </a>
-                </li>
-            </ul>
+           <div class="navLists">
+            
+                <!-- FAVOURITES DROPDOWN -->
+                <div class="listDropdown">
+                    <button class="listBtn" data-target="favoritesMenu">
+                        <img class="heartImg" src="assets/img/heart-icon-light.png" alt="">
+                        <span>
+                            Favourites ▾
+                        </span>
+                    </button>
+
+                    <div id="favoritesMenu" class="dropdownMenu" hidden>
+                        <ul id="favoritesList"></ul>
+                    </div>
+                </div>
+
+                <!-- WANT TO READ DROPDOWN -->
+                <div class="listDropdown">
+                    <button class="listBtn" data-target="wantMenu">
+                        <img src="assets/img/books-light.png" alt="">
+                        <span>
+                            Want to Read ▾
+                        </span>
+                    </button>
+
+                    <div id="wantMenu" class="dropdownMenu" hidden>
+                    <ul id="wantList"></ul>
+                    </div>
+                </div>
+
+            </div>
+ 
         </nav>
     </header>
 

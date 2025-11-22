@@ -162,22 +162,20 @@ function createBookCard(book) {
     h3El.textContent = book.title;
     
     spanBookAuthorPublisherEl.textContent = `by ${authors.join(', ')} | Publisher: ${book.publisher}`;
-
  
     const divBookCategoryEl = document.createElement('div');
     divBookCategoryEl.textContent = book.category;
     divBookCategoryEl.classList.add('bookCategory');
-    divCategoriesContEl.appendChild(divBookCategoryEl);
-    
+    divCategoriesContEl.appendChild(divBookCategoryEl);   
 
     pBookRatingEl.textContent = `⭐ ${book.avgRating}`;
     spanRatingCountEl.textContent = `(${book.ratingsCount})`;
     pBookDescriptionEl.textContent = book.description;
-
-   
+ 
     aPreviewLinkEl.target = "_blank";
    
     btnEl.textContent = 'Want to Read'
+    btnEl.addEventListener('click', toggleWantToRead)
 
     /* Assign Classes */
     articleEl.classList.add('bookCard');
@@ -189,7 +187,6 @@ function createBookCard(book) {
     spanRatingCountEl.classList.add('ratingCount');
     divCategoriesContEl.classList.add('categoriesCont');
    
-
     divBookMetaRightEl.classList.add('bookMetaRight');
     divTitleHeartEL.classList.add('titleHeart');
     h3El.classList.add('bookTitle');
@@ -263,7 +260,6 @@ function appendToMainCategoryComponent(cardElement, bookCategory) {
 }
 
 
-/* Design functions */
 function addToFavorites(e) {
     const regularHeartEl = e.target; 
     const parentEl = regularHeartEl.parentElement;
@@ -272,11 +268,9 @@ function addToFavorites(e) {
     iSolidHeart.addEventListener('click', removeFromFavorites)
     parentEl.appendChild(iSolidHeart)
     regularHeartEl.style.display = 'none';
-
 }
 
 function removeFromFavorites(e) {
-
     const solidHeartEl = e.target; 
     const parentEl = solidHeartEl.parentElement;
     const children = Array.from(parentEl.children);
@@ -285,3 +279,73 @@ function removeFromFavorites(e) {
     regularHeartEl.style.display = 'inline';
     solidHeartEl.remove()
 }
+
+const dropdownButtons = document.querySelectorAll('.listBtn');
+
+dropdownButtons.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation(); // prevent event from bubbling
+
+    const menuId = btn.dataset.target;
+    console.log(menuId)
+    const menu = document.getElementById(menuId);
+
+    // Close all other dropdowns first
+    document.querySelectorAll('.dropdownMenu').forEach(m => {
+      if (m !== menu) m.hidden = true;
+    });
+
+    // Toggle the clicked menu
+    menu.hidden = !menu.hidden;
+  });
+});
+
+
+function toggleWantToRead(e) {
+    const btnEl = e.target;
+    const parentEl = btnEl.parentElement; /* div class='bookMetaRight' */
+    const titleEl = parentEl.querySelector('h3');
+    const containerEl = parentEl.parentElement; /* div class='bookInfo' */
+    const imgCoverEl = containerEl.querySelector('.bookMetaLeft img');
+    const ulListEL = document.getElementById('wantList');
+     
+    const bookId = titleEl.textContent;
+
+    let existingLiEl = ulListEL.querySelectorAll(`li[data-id="${bookId}"]`)
+
+    if (btnEl.textContent === 'Want to Read') {
+        // creating new li only if it doesn't exist
+        if (existingLiEl.length === 0) {
+            const newLiEl = document.createElement('li');
+            newLiEl.dataset.id = bookId;
+
+            const newImgEl = document.createElement('img');
+            newImgEl.src = imgCoverEl.src;
+
+            const newPEl = document.createElement('p');
+            newPEl.classList.add('author');
+            newPEl.textContent = titleEl.textContent;
+
+            newLiEl.appendChild(newImgEl);
+            newLiEl.appendChild(newPEl);
+
+            ulListEL.appendChild(newLiEl);
+
+        }
+
+        btnEl.textContent = "Added to Book List";
+    } else {
+        if (existingLiEl) {
+            existingLiEl[0].remove();
+        }
+        btnEl.textContent = "Want to Read";
+    }   
+    
+
+}
+
+
+// Close dropdowns if clicking outside
+document.addEventListener('click', () => {
+  document.querySelectorAll('.dropdownMenu').forEach(menu => menu.hidden = true);
+});

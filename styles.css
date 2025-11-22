@@ -57,38 +57,96 @@ nav {
 
 }
 
-.links {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1em;
-    margin-left: 4em;
-    margin-right: 4em;
-}
 
-.logo-img {
+.logoImg {
     width: 10em;
 }
 
-.link-cont {
+
+.navLists {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* BUTTONS */
+.listBtn {
     display: flex;
-    align-items: center;
     justify-content: center;
-    color: var(--clr-creme);
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
     gap: .3em;
-
+   
 }
 
-.link-cont:hover {
-    color: var(--clr-purple-dark);
+.listBtn img.heartImg {
+  width: 1.8rem;
+  
+}
+.listDropdown:last-child .listBtn img {
+  width: 2.3rem;
+ 
 }
 
-.link-cont img {
-    width: 1.8em;
+.listBtn span {
+    font-weight: 500;
+    color: var(--clr-creme);
+    align-self: center;
 }
 
-.link-cont .heart-img {
-    width: 1.4em;
+
+/* DROPDOWN MENU */
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.1);
+  padding: 0.5rem;
+  width: 240px;
+  z-index: 100;
+}
+
+.dropdownMenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 16em;
+  overflow-y: auto;
+}
+
+.dropdownMenu li {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .4rem;
+  border-radius: 6px;
+}
+
+.dropdownMenu li img {
+  width: 3em;
+  height: 4em;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.dropdownMenu .title {
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.dropdownMenu .author {
+  font-size: .75rem;
+  color: #666;
+}
+
+/* Positioning wrapper */
+.listDropdown {
+  position: relative;
 }
 
 .main {
@@ -107,7 +165,7 @@ nav {
   font-size: 2.1rem;
   font-weight: 600;
   text-align: center;
-  color: #fff;
+  color: var(--clr-red);
 }
 
 .loading-dots .dots::after {
@@ -207,14 +265,17 @@ nav {
     gap: 1.3em;
     flex-wrap: wrap;
     justify-content: center;
+     overflow: hidden;
+
 }
+
 
 .categoriesCont {
     display: flex;
     gap: .2em;
     margin-bottom: .4em;
     margin-top: .4em;
-    flex-wrap: wrap;
+    
 }
 
 .bookCard {
@@ -228,7 +289,7 @@ nav {
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     width: 24rem;
     height: 24rem;
-   
+
     align-items: flex-start;
     text-align: left;
     position: relative;
@@ -237,7 +298,6 @@ nav {
 .bookInfo {
     display: flex;
     gap: 10px;
-
 }
 
 .bookCover {
@@ -355,7 +415,8 @@ nav {
     background-color: transparent;
     border: 2px solid var(--clr--purple-blue);
     border-radius: 4em;
-    padding: .3em 5em;
+    width: 60%;
+    padding: .5em 0;
     color: var(--clr--purple-blue);
     cursor: pointer;
     
@@ -368,7 +429,6 @@ nav {
     color: var(--clr-red-dark);
     box-shadow: 1px 1px 10px var(--clr--purple-blue);
 }
-
 
 
 
