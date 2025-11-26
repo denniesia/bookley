@@ -69,15 +69,20 @@ function loadBookCategories() {
 }
 
 async function retrieveBooksByCategoryFromOpenLibrary(category) {
-    /* api endpoint for 6 books */
-    const apiURL = `https://openlibrary.org/subjects/${category}.json?limit=6`;
+    try {
+        /* api endpoint for 6 books */
+        const apiURL = `https://openlibrary.org/subjects/${category}.json?limit=6`;
 
-    const res = await fetch(apiURL);
+        const res = await fetch(apiURL);
 
-    const data = await res.json()
-    const books = data.works; 
+        const data = await res.json()
+        const books = data.works; 
+        
+        extractBookInfo(books, category)
+    } catch (err) {
+        alert(err)
+    }
     
-    extractBookInfo(books, category)
 }
 
 function extractBookInfo(rawItems, bookCategory) {
@@ -94,14 +99,20 @@ function extractBookInfo(rawItems, bookCategory) {
 
 async function fetchBookInfoFromGoogleBooks(bookObject){
     const bookTitle = encodeURIComponent(bookObject.title);
+    
+    try {
+        const apiURL = `https://www.googleapis.com/books/v1/volumes?q=intitle:${bookTitle}`
+        const res = await fetch(apiURL);
 
-    const apiURL = `https://www.googleapis.com/books/v1/volumes?q=intitle:${bookTitle}`
-    const res = await fetch(apiURL);
+        const data = await res.json()
+        const additionalBookInfo = data.items[0]; 
 
-    const data = await res.json()
-    const additionalBookInfo = data.items[0]; 
+        expandBookInfoFromGoogleBooks(bookObject, additionalBookInfo)
+    } catch (err) {
+        alert(err)
+    }
 
-    expandBookInfoFromGoogleBooks(bookObject, additionalBookInfo)
+    
 }
 
 function expandBookInfoFromGoogleBooks(bookObject, additionalInfo){
