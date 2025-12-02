@@ -1,17 +1,6 @@
 const searchEl = document.getElementById('search');
 const pLoadingEl = document.getElementById('loadingMessage');
 
-
-// async function searchBooks() {
-//     const query = searchEl.value.trim();
-
-//     const apiURL = `https://www.googleapis.com/books/v1/volumes?q=intitle:${query}+inauthor:${query}&maxResults=24`;
-//     const res = await fetch(apiURL);
-//     const data = await res.json();
-
-//     console.log(data)
-// }
-
 display()
 
 function display() {
@@ -48,7 +37,6 @@ async function searchQuery(query) {
             category: "Search Result"
         };
 
-        // reuse your existing function
         expandBookInfoFromGoogleBooks(bookObject, item);
     }
 }
@@ -68,6 +56,7 @@ function loadBookCategories() {
     }
 }
 
+
 async function retrieveBooksByCategoryFromOpenLibrary(category) {
     try {
         /* api endpoint for 6 books */
@@ -80,7 +69,7 @@ async function retrieveBooksByCategoryFromOpenLibrary(category) {
         
         extractBookInfo(books, category)
     } catch (err) {
-        alert(err)
+        console.error(err); 
     }
     
 }
@@ -99,7 +88,7 @@ function extractBookInfo(rawItems, bookCategory) {
 
 async function fetchBookInfoFromGoogleBooks(bookObject){
     const bookTitle = encodeURIComponent(bookObject.title);
-    
+
     try {
         const apiURL = `https://www.googleapis.com/books/v1/volumes?q=intitle:${bookTitle}`
         const res = await fetch(apiURL);
@@ -109,7 +98,7 @@ async function fetchBookInfoFromGoogleBooks(bookObject){
 
         expandBookInfoFromGoogleBooks(bookObject, additionalBookInfo)
     } catch (err) {
-        alert(err)
+        console.error(err); 
     }
 
     
@@ -187,7 +176,12 @@ function createBookCard(book) {
     }
 
     /* Assign text */
-    imgEl.src = book.imageLink;
+    if (book.imageLink) {
+        imgEl.src = book.imageLink;
+    } else {
+        imgEl.src = 'assets/img/default_cover.webp'
+    }
+    
     imgEl.alt = 'Book Cover';
     h3El.textContent = book.title;
     
@@ -386,7 +380,6 @@ function toggleWantToRead(e) {
         btnEl.textContent = "Want to Read";
     }   
     
-
 }
 
 
