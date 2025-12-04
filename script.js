@@ -107,7 +107,6 @@ async function fetchBookInfoFromGoogleBooks(bookObject){
 function expandBookInfoFromGoogleBooks(bookObject, additionalInfo){
     bookObject["publisher"] = additionalInfo.volumeInfo.publisher || "Unknown publisher";
     bookObject["language"] = additionalInfo.volumeInfo?.language || "N/A";
-    // bookObject["authors"] = additionalInfo.volumeInfo?.authors || "Unknown";
     bookObject["previewLink"] = additionalInfo.volumeInfo?.previewLink;
     bookObject["imageLink"] = additionalInfo.volumeInfo?.imageLinks?.thumbnail;
     bookObject["avgRating"] = additionalInfo.volumeInfo?.averageRating || "-";
@@ -133,40 +132,89 @@ function expandBookInfoFromGoogleBooks(bookObject, additionalInfo){
 
 function createBookCard(book) {
     const articleEl = document.createElement('article');
+    articleEl.classList.add('bookCard');
 
     const divBookCardEl = document.createElement('div');
-    const divBookInfoEl = document.createElement('div');
+    divBookCardEl.classList.add('bookCard');
    
+    const divBookInfoEl = document.createElement('div');
+    divBookInfoEl.classList.add('bookInfo');
+
     const divBookMetaLeftEl = document.createElement('div');
+    divBookMetaLeftEl.classList.add('bookMetaLeft');
+
     const imgEl = document.createElement('img');
+    imgEl.classList.add('bookCover');
+    if (book.imageLink) {
+        imgEl.src = book.imageLink;
+    } else {
+        imgEl.src = 'assets/img/default_cover.webp'
+    }
+    imgEl.alt = 'Book Cover';
+
     const pBookRatingEl = document.createElement('p');
+    pBookRatingEl.classList.add('bookRating');
+    pBookRatingEl.textContent = `⭐ ${book.avgRating}`;
+  
     const spanRatingCountEl = document.createElement('span');
+    spanRatingCountEl.textContent = `(${book.ratingsCount})`;
+    spanRatingCountEl.classList.add('ratingCount');
+    
     const divCategoriesContEl = document.createElement('div');
+    divCategoriesContEl.classList.add('categoriesCont');
 
     const divBookMetaRightEl = document.createElement('div');
+    divBookMetaRightEl.classList.add('bookMetaRight');
 
     const divTitleHeartEL = document.createElement('div');
+    divTitleHeartEL.classList.add('titleHeart');
+
     const h3El = document.createElement('h3');
+    h3El.textContent = book.title;
+    h3El.classList.add('bookTitle');
+
     const iRegularHeart = document.createElement('i');
+    iRegularHeart.classList.add('fa-regular', 'fa-heart', 'regular-heart')
+
     const iSolidHeart = document.createElement('i');
-  
+    iSolidHeart.classList.add('fa-solid', 'fa-heart', 'solid-heart', 'hidden');
+
     const divAuthorPublisherEl = document.createElement('div');
+    divAuthorPublisherEl.classList.add('bookAuthorPublisher');
+
     const spanBookAuthorPublisherEl = document.createElement('span');
-   
+    spanBookAuthorPublisherEl.textContent = `by ${authors.join(', ')} | Publisher: ${book.publisher}`;
+
     const pBookDescriptionEl = document.createElement('p');
+    pBookDescriptionEl.textContent = book.description;
+    pBookDescriptionEl.classList.add('bookDescription');  
+
     const divLanguagePagesPreviewEl = document.createElement('div');
-    const divLanguagePagesEl = document.createElement('div');
+    divLanguagePagesPreviewEl.classList.add('languagePagesPreview');
     
+    const divLanguagePagesEl = document.createElement('div');
+    divLanguagePagesEl.classList.add('languagePages');
+ 
     const btnEl = document.createElement('button');
+    btnEl.textContent = 'Want to Read'
+    btnEl.classList.add('wantToRead')
+    btnEl.addEventListener('click', toggleWantToRead)
 
     const divLanguageEl = document.createElement('div');
     const divPagesEl = document.createElement('div');
     const divPreviewLinkEl = document.createElement('div');
+    
     const aPreviewLinkEl = document.createElement('a');
+    aPreviewLinkEl.target = "_blank";
 
     const iLanguageEl = document.createElement('i');
+    iLanguageEl.classList.add('fa-solid', 'fa-language');
+
     const iPagesEl = document.createElement('i');
+    iPagesEl.classList.add('fa-regular', 'fa-file-lines');
+
     const iPreviewEl = document.createElement('i');
+    iPreviewEl.classList.add('fa-solid', 'fa-link')
 
     let authors;
     if (Array.isArray(book.authors)) {
@@ -174,62 +222,14 @@ function createBookCard(book) {
     } else {
         authors = ['Unknown'];
     }
-
-    /* Assign text */
-    if (book.imageLink) {
-        imgEl.src = book.imageLink;
-    } else {
-        imgEl.src = 'assets/img/default_cover.webp'
-    }
     
-    imgEl.alt = 'Book Cover';
-    h3El.textContent = book.title;
-    
-    spanBookAuthorPublisherEl.textContent = `by ${authors.join(', ')} | Publisher: ${book.publisher}`;
- 
     const divBookCategoryEl = document.createElement('div');
     divBookCategoryEl.textContent = book.category;
     divBookCategoryEl.classList.add('bookCategory');
+
+
     divCategoriesContEl.appendChild(divBookCategoryEl);   
 
-    pBookRatingEl.textContent = `⭐ ${book.avgRating}`;
-    spanRatingCountEl.textContent = `(${book.ratingsCount})`;
-    pBookDescriptionEl.textContent = book.description;
- 
-    aPreviewLinkEl.target = "_blank";
-   
-    btnEl.textContent = 'Want to Read'
-    btnEl.addEventListener('click', toggleWantToRead)
-
-    /* Assign Classes */
-    articleEl.classList.add('bookCard');
-    divBookCardEl.classList.add('bookCard');
-    divBookInfoEl.classList.add('bookInfo');
-    divBookMetaLeftEl.classList.add('bookMetaLeft');
-    imgEl.classList.add('bookCover');
-    pBookRatingEl.classList.add('bookRating');
-    spanRatingCountEl.classList.add('ratingCount');
-    divCategoriesContEl.classList.add('categoriesCont');
-   
-    divBookMetaRightEl.classList.add('bookMetaRight');
-    divTitleHeartEL.classList.add('titleHeart');
-    h3El.classList.add('bookTitle');
-
-    iRegularHeart.classList.add('fa-regular', 'fa-heart', 'regular-heart')
-    iSolidHeart.classList.add('fa-solid', 'fa-heart', 'solid-heart', 'hidden');
-
-    divAuthorPublisherEl.classList.add('bookAuthorPublisher');
-   
-    pBookDescriptionEl.classList.add('bookDescription');
-    divLanguagePagesPreviewEl.classList.add('languagePagesPreview');
-    divLanguagePagesEl.classList.add('languagePages');
-    btnEl.classList.add('wantToRead')
-
-    iLanguageEl.classList.add('fa-solid', 'fa-language');
-    iPagesEl.classList.add('fa-regular', 'fa-file-lines');
-    iPreviewEl.classList.add('fa-solid', 'fa-link')
-
-    /* Append Children */
     articleEl.appendChild(divBookInfoEl);
     
     divBookInfoEl.appendChild(divBookMetaLeftEl);
@@ -289,7 +289,6 @@ function appendToMainCategoryComponent(cardElement, bookCategory) {
         const sectionCat = document.getElementById('categories');
         parentResultEl.style.display = 'flex';
         sectionCat.style.display = 'none';
-      
         
         return;
     }
@@ -316,7 +315,6 @@ function toggleAddToFavorites(e) {
     const bookId = titleEl.textContent;
     
     let existingLiEl = ulListEL.querySelectorAll(`li[data-id="${bookId}"]`)
-    
 
     const children = btnEl.children;
     if (!children[0].classList.contains('hidden')) {
@@ -343,7 +341,7 @@ dropdownButtons.forEach(btn => {
     console.log(menuId)
     const menu = document.getElementById(menuId);
 
-    // Close all other dropdowns first
+    // closes other dropdowns
     document.querySelectorAll('.dropdownMenu').forEach(m => {
       if (m !== menu) m.hidden = true;
     });
@@ -367,7 +365,7 @@ function toggleWantToRead(e) {
     let existingLiEl = ulListEL.querySelectorAll(`li[data-id="${bookId}"]`)
 
     if (btnEl.textContent === 'Want to Read') {
-        // creating new li only if it doesn't exist
+        
         if (existingLiEl.length === 0) {
            createAppendNewLiEL(ulListEL, bookId, imgCoverEl.src, titleEl.textContent)
         }
@@ -381,7 +379,6 @@ function toggleWantToRead(e) {
     }   
     
 }
-
 
 // Close dropdowns if clicking outside
 document.addEventListener('click', () => {
