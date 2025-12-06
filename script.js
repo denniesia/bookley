@@ -148,7 +148,7 @@ function createBookCard(book) {
     if (book.imageLink) {
         imgEl.src = book.imageLink;
     } else {
-        imgEl.src = 'assets/img/default_cover.webp'
+        imgEl.src = 'assets/img/bookCover.png'
     }
     imgEl.alt = 'Book Cover';
 

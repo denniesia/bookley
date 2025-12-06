@@ -282,10 +282,10 @@ nav {
     gap: 1.3em;
     flex-wrap: wrap;
     justify-content: center;
-     overflow: hidden;
+    overflow: hidden;
+    padding: 1em;
 
 }
-
 
 .categoriesCont {
     display: flex;
@@ -303,13 +303,16 @@ nav {
     border-radius: 10px;
     padding: 10px;
     background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     width: 24rem;
     height: 24rem;
-
     align-items: flex-start;
     text-align: left;
     position: relative;
+}
+
+.bookCard:hover {
+    box-shadow: 2px 2px 10px var(--clr-creme),
+                2px 2px 10px var(--clr-creme);
 }
 
 .bookInfo {
@@ -430,7 +433,7 @@ nav {
     background-color: transparent;
     border: 2px solid var(--clr--purple-blue);
     border-radius: 4em;
-    width: 60%;
+    width: 52%;
     padding: .5em 0;
     color: var(--clr--purple-blue);
     cursor: pointer;
