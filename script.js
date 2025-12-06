@@ -182,6 +182,12 @@ function createBookCard(book) {
     const divAuthorPublisherEl = document.createElement('div');
     divAuthorPublisherEl.classList.add('bookAuthorPublisher');
 
+    let authors;
+    if (Array.isArray(book.authors)) {
+    authors = Array.from(book.authors); 
+    } else {
+        authors = ['Unknown'];
+    }
     const spanBookAuthorPublisherEl = document.createElement('span');
     spanBookAuthorPublisherEl.textContent = `by ${authors.join(', ')} | Publisher: ${book.publisher}`;
 
@@ -216,13 +222,6 @@ function createBookCard(book) {
     const iPreviewEl = document.createElement('i');
     iPreviewEl.classList.add('fa-solid', 'fa-link')
 
-    let authors;
-    if (Array.isArray(book.authors)) {
-    authors = Array.from(book.authors); 
-    } else {
-        authors = ['Unknown'];
-    }
-    
     const divBookCategoryEl = document.createElement('div');
     divBookCategoryEl.textContent = book.category;
     divBookCategoryEl.classList.add('bookCategory');
