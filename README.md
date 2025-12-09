@@ -17,7 +17,6 @@ https://denniesia.github.io/bookley/
   - Description and categories
   - Language, average rating, page count
   - Preview links and cover images
-- Responsive and interactive design with dynamic book cards.
 
 
 ---
