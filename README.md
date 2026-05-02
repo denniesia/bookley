@@ -23,7 +23,9 @@ https://denniesia.github.io/bookley/
 
 ## Tech Stack
 
-- **Frontend:** HTML, CSS, JavaScript
-
+- HTML
+- CSS
+- JavaScript
+- API
 
 ---
